@@ -40,6 +40,8 @@ class Plugin : public cs::core::PluginBase {
         double mOuterRadius;
       };
       std::optional<Ring> mRing;
+
+      std::optional<std::string> mAnimationPath;
     };
 
     std::map<std::string, SimpleBody> mSimpleBodies;

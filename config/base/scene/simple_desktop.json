@@ -831,7 +831,8 @@
           "texture": "../share/resources/textures/vesta.jpg"
         },
         "Jupiter": {
-          "texture": "../share/resources/textures/jupiter.jpg"
+          "texture": "../share/resources/textures/jupiter.jpg",
+          "animationPath": "../share/resources/textures/jupiter-animated/"
         },
         "Io": {
           "texture": "../share/resources/textures/io.jpg"

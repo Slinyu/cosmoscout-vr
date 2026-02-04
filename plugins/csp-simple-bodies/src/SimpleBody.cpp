@@ -12,6 +12,7 @@
 #include "../../../src/cs-graphics/TextureLoader.hpp"
 #include "../../../src/cs-utils/FrameStats.hpp"
 #include "../../../src/cs-utils/filesystem.hpp"
+#include "../../../src/cs-utils/logger.hpp"
 #include "../../../src/cs-utils/utils.hpp"
 
 #include <VistaKernel/GraphicsManager/VistaSceneGraph.h>
@@ -303,6 +304,11 @@ void SimpleBody::configure(Plugin::Settings::SimpleBody const& settings) {
     mShaderDirty = true;
   }
 
+  if (mSimpleBodySettings.mAnimationPath != settings.mAnimationPath) {
+    mAnimationPath = *settings.mAnimationPath;
+    logger().info("Animation Path changed to: {}", mAnimationPath);
+  }
+
   mSimpleBodySettings = settings;
 }
 
@@ -391,21 +397,19 @@ bool SimpleBody::Do() {
     string frameString = "../share/resources/textures/jupiter/jupiterA-" + "0" + ".jpg";
   */
 
-  if (mObjectName == "Jupiter") {
+  if (mSimpleBodySettings.mAnimationPath) {
     if (mCurrentAnimatedFrame >= mMaxAnimatedFrames) {
       mCurrentAnimatedFrame = 1;
     } else {
       if (mCurrentAnimationStallFrame >= mMaxAnimationStallFrames) {
         mCurrentAnimationStallFrame = 0;
         mCurrentAnimatedFrame++;
-        mTexture = cs::graphics::TextureLoader::loadFromFile("../share/resources/textures/jupiter-animated/frame-" + std::to_string(mCurrentAnimatedFrame) + ".jpg");
+        mTexture = cs::graphics::TextureLoader::loadFromFile(mAnimationPath + "frame-" + std::to_string(mCurrentAnimatedFrame) + ".jpg");
+        logger().info("Current animated frame is {}", mCurrentAnimatedFrame);
       } else {
         mCurrentAnimationStallFrame++;
       }
-      
     }
-
-    logger().info(mCurrentAnimatedFrame);
   }
 
   // ------------------------------------------------
