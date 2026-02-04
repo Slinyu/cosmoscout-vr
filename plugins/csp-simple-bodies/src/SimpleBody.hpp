@@ -112,8 +112,8 @@ class SimpleBody : public cs::scene::CelestialSurface,
 
   int mMaxAnimatedFrames = 0;
   int mCurrentAnimatedFrame = 1;
-  int mMaxAnimationStallFrames = 20;
-  int mCurrentAnimationStallFrame = 0;
+  int mAnimationStallFrames = 20;
+  int mCurrentAnimationStallFrame = 1;
 
   std::string mAnimationPath;
 

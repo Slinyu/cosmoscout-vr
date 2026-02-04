@@ -403,19 +403,19 @@ bool SimpleBody::Do() {
     ../share/resources/textures/jupiterA/jupiterA-0.jpg
     string frameString = "../share/resources/textures/jupiter/jupiterA-" + "0" + ".jpg";
   */
-
+ 
   if (mSimpleBodySettings.mAnimationPath) {
-    if (mCurrentAnimatedFrame >= mMaxAnimatedFrames) {
-      mCurrentAnimatedFrame = 1;
-    } else {
-      if (mCurrentAnimationStallFrame >= mMaxAnimationStallFrames) {
-        mCurrentAnimationStallFrame = 0;
-        mCurrentAnimatedFrame++;
-        mTexture = cs::graphics::TextureLoader::loadFromFile(mAnimationPath + "frame-" + std::to_string(mCurrentAnimatedFrame) + ".jpg");
-        logger().info("Current animated frame is {}", mCurrentAnimatedFrame);
+    if (mCurrentAnimationStallFrame > mAnimationStallFrames) {
+      logger().info("Current animated frame is {}", mCurrentAnimatedFrame);
+      mCurrentAnimationStallFrame = 1;
+      mTexture = cs::graphics::TextureLoader::loadFromFile(mAnimationPath + "frame-" + std::to_string(mCurrentAnimatedFrame) + ".jpg");
+      if (mCurrentAnimatedFrame + 1 > mMaxAnimatedFrames) {
+        mCurrentAnimatedFrame = 1;
       } else {
-        mCurrentAnimationStallFrame++;
+        mCurrentAnimatedFrame++;
       }
+    } else {
+      mCurrentAnimationStallFrame++;
     }
   }
 
