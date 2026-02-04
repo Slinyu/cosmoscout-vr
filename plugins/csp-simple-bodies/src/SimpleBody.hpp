@@ -111,11 +111,12 @@ class SimpleBody : public cs::scene::CelestialSurface,
 // ------------------------------------------------
 
   int mMaxAnimatedFrames = 0;
-  int mCurrentAnimatedFrame = 1;
+  int mCurrentAnimatedFrame = 0;
   int mAnimationStallFrames = 20;
   int mCurrentAnimationStallFrame = 1;
 
   std::string mAnimationPath;
+  std::vector<std::unique_ptr<VistaTexture>> mAnimationTextures;
 
 // ------------------------------------------------
 
