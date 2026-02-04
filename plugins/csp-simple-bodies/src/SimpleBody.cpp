@@ -383,6 +383,33 @@ bool SimpleBody::Do() {
     return true;
   }
 
+  // ------------------------------------------------
+
+  /* Notes:
+    mTexture = cs::graphics::TextureLoader::loadFromFile(mSimpleBodySettings.mTexture);
+    ../share/resources/textures/jupiterA/jupiterA-0.jpg
+    string frameString = "../share/resources/textures/jupiter/jupiterA-" + "0" + ".jpg";
+  */
+
+  if (mObjectName == "Jupiter") {
+    if (mCurrentAnimatedFrame >= mMaxAnimatedFrames) {
+      mCurrentAnimatedFrame = 1;
+    } else {
+      if (mCurrentAnimationStallFrame >= mMaxAnimationStallFrames) {
+        mCurrentAnimationStallFrame = 0;
+        mCurrentAnimatedFrame++;
+        mTexture = cs::graphics::TextureLoader::loadFromFile("../share/resources/textures/jupiter-animated/frame-" + std::to_string(mCurrentAnimatedFrame) + ".jpg");
+      } else {
+        mCurrentAnimationStallFrame++;
+      }
+      
+    }
+
+    logger().info(mCurrentAnimatedFrame);
+  }
+
+  // ------------------------------------------------
+
   cs::utils::FrameStats::ScopedTimer timer("Draw " + parent->getCenterName());
 
   if (mShaderDirty || mEclipseShadowReceiver.needsRecompilation()) {

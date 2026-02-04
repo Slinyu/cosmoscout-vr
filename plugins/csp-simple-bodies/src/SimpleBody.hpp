@@ -108,6 +108,15 @@ class SimpleBody : public cs::scene::CelestialSurface,
   static const char* SPHERE_FRAG;
 };
 
+// ------------------------------------------------
+
+  int mMaxAnimatedFrames = 9;
+  int mCurrentAnimatedFrame = 1;
+  int mMaxAnimationStallFrames = 20;
+  int mCurrentAnimationStallFrame = 0;
+
+// ------------------------------------------------
+
 } // namespace csp::simplebodies
 
 #endif // CSP_SIMPLE_BODIES_SIMPLE_PLANET_HPP
