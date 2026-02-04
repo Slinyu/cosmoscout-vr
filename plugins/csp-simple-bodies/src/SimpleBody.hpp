@@ -76,7 +76,7 @@ class SimpleBody : public cs::scene::CelestialSurface,
   std::unique_ptr<VistaOpenGLNode> mGLNode;
 
   Plugin::Settings::SimpleBody  mSimpleBodySettings;
-  std::unique_ptr<VistaTexture> mTexture;
+  std::shared_ptr<VistaTexture> mTexture;
   VistaGLSLShader               mShader;
   VistaVertexArrayObject        mSphereVAO;
   VistaBufferObject             mSphereVBO;
@@ -116,7 +116,7 @@ class SimpleBody : public cs::scene::CelestialSurface,
   int mCurrentAnimationStallFrame = 1;
 
   std::string mAnimationPath;
-  std::vector<std::unique_ptr<VistaTexture>> mAnimationTextures;
+  std::vector<std::shared_ptr<VistaTexture>> mAnimationTextures;
 
 // ------------------------------------------------
 

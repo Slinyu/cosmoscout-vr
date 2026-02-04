@@ -316,10 +316,10 @@ void SimpleBody::configure(Plugin::Settings::SimpleBody const& settings) {
     logger().info("Animation frame count set to: {}", mMaxAnimatedFrames);
     // Loads the animation frames
     mAnimationTextures.reserve(mMaxAnimatedFrames);
-    /*for (int i = 1; i <= mMaxAnimatedFrames; ++i) {
+    for (int i = 1; i <= mMaxAnimatedFrames; ++i) {
       mAnimationTextures.emplace_back(
           cs::graphics::TextureLoader::loadFromFile(mAnimationPath + "frame-" + std::to_string(i) + ".jpg"));
-    }*/
+    }
   }
 
   mSimpleBodySettings = settings;
@@ -419,8 +419,7 @@ bool SimpleBody::Do() {
       }
       logger().info("Current animated frame is {}", mCurrentAnimatedFrame);
       mCurrentAnimationStallFrame = 1;
-      //std::swap(mTexture, mAnimationTextures[mCurrentAnimatedFrame - 1]);
-      mTexture = cs::graphics::TextureLoader::loadFromFile(mAnimationPath + "frame-" + std::to_string(mCurrentAnimatedFrame) + ".jpg");
+      mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1];
       
     } else {
       mCurrentAnimationStallFrame++;
@@ -577,11 +576,6 @@ bool SimpleBody::Do() {
 
   // Clean up.
   mTexture->Unbind(GL_TEXTURE0);
-
-  // ------------------------------------------------
-  // Give pointer back for animation loop.
-  //std::swap(mAnimationTextures[mCurrentAnimatedFrame - 1], mTexture);
-  // ------------------------------------------------
 
   if (mSimpleBodySettings.mRing) {
     mRingTexture->Unbind();
