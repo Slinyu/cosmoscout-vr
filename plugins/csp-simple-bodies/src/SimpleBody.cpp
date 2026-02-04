@@ -25,6 +25,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <utility>
 
+#include <filesystem>
+
 namespace csp::simplebodies {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -305,8 +307,13 @@ void SimpleBody::configure(Plugin::Settings::SimpleBody const& settings) {
   }
 
   if (mSimpleBodySettings.mAnimationPath != settings.mAnimationPath) {
+    // Sets up animation if path is set
     mAnimationPath = *settings.mAnimationPath;
     logger().info("Animation Path changed to: {}", mAnimationPath);
+    // Sets max animated frames by counting files in directory
+    auto dir = std::filesystem::directory_iterator(mAnimationPath);
+    mMaxAnimatedFrames = static_cast<int>(std::distance(begin(dir), end(dir)));
+    logger().info("Animation frame count set to: {}", mMaxAnimatedFrames);
   }
 
   mSimpleBodySettings = settings;
