@@ -110,6 +110,7 @@ class SimpleBody : public cs::scene::CelestialSurface,
 
 // ------------------------------------------------
 
+  // Frames start at 1. 0 Values here ensure no animation if no images available.
   int mMaxAnimatedFrames = 0;
   int mCurrentAnimatedFrame = 0;
   int mAnimationStallFrames = 20;

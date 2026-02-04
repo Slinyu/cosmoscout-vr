@@ -314,7 +314,7 @@ void SimpleBody::configure(Plugin::Settings::SimpleBody const& settings) {
     auto dir = std::filesystem::directory_iterator(mAnimationPath);
     mMaxAnimatedFrames = static_cast<int>(std::distance(begin(dir), end(dir)));
     logger().info("Animation frame count set to: {}", mMaxAnimatedFrames);
-    // Loads the animation frames
+    // Loads the animation frames. If empty, automatically falls back to static texture.
     mAnimationTextures.reserve(mMaxAnimatedFrames);
     for (int i = 1; i <= mMaxAnimatedFrames; ++i) {
       mAnimationTextures.emplace_back(
