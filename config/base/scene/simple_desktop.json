@@ -853,7 +853,8 @@
             "texture": "../share/resources/textures/saturn-rings.png",
             "innerRadius": 67000000,
             "outerRadius": 140210000
-          }
+          },
+          "animationPath": "../share/resources/textures/saturn-animated/"
         },
         "Mimas": {
           "texture": "../share/resources/textures/mimas.jpg",

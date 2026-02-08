@@ -106,20 +106,20 @@ class SimpleBody : public cs::scene::CelestialSurface,
 
   static const char* SPHERE_VERT;
   static const char* SPHERE_FRAG;
-};
 
-// ------------------------------------------------
+  // ------------------------------------------------
 
   // Frames start at 1. 0 Values here ensure no animation if no images available.
   int mMaxAnimatedFrames = 0;
   int mCurrentAnimatedFrame = 0;
-  int mAnimationStallFrames = 20;
+  int mAnimationStallFrames = 10;
   int mCurrentAnimationStallFrame = 1;
 
   std::string mAnimationPath;
   std::vector<std::shared_ptr<VistaTexture>> mAnimationTextures;
 
 // ------------------------------------------------
+};
 
 } // namespace csp::simplebodies
 
