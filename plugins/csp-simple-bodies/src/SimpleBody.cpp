@@ -310,15 +310,18 @@ void SimpleBody::configure(Plugin::Settings::SimpleBody const& settings) {
     // Sets up animation if path is set
     mAnimationPath = *settings.mAnimationPath;
     logger().info("Animation Path changed to: {}", mAnimationPath);
-    // Sets max animated frames by counting files in directory
-    auto dir = std::filesystem::directory_iterator(mAnimationPath);
-    mMaxAnimatedFrames = static_cast<int>(std::distance(begin(dir), end(dir)));
-    logger().info("Animation frame count set to: {}", mMaxAnimatedFrames);
-    // Loads the animation frames. If empty, automatically falls back to static texture.
-    mAnimationTextures.reserve(mMaxAnimatedFrames);
-    for (int i = 1; i <= mMaxAnimatedFrames; ++i) {
-      mAnimationTextures.emplace_back(
-          cs::graphics::TextureLoader::loadFromFile(mAnimationPath + "frame-" + std::to_string(i) + ".jpg"));
+    // Sets settings for animation frames if the directory exists.
+    if (std::filesystem::exists(mAnimationPath) && std::filesystem::is_directory(mAnimationPath)) {
+      auto dir = std::filesystem::directory_iterator(mAnimationPath);
+      // Sets max animated frames by counting files in directory
+      mMaxAnimatedFrames = static_cast<int>(std::distance(begin(dir), end(dir)));
+      logger().info("Animation frame count set to: {}", mMaxAnimatedFrames);
+      // Loads the animation frames. If empty, automatically falls back to static texture.
+      mAnimationTextures.reserve(mMaxAnimatedFrames);
+      for (int i = 1; i <= mMaxAnimatedFrames; ++i) {
+        mAnimationTextures.emplace_back(
+            cs::graphics::TextureLoader::loadFromFile(mAnimationPath + "frame-" + std::to_string(i) + ".jpg"));
+      }
     }
   }
 
@@ -410,13 +413,14 @@ bool SimpleBody::Do() {
     string frameString = "../share/resources/textures/jupiter/jupiterA-" + "0" + ".jpg";
   */
 
-  if (mSimpleBodySettings.mAnimationPath) {
+  if (mSimpleBodySettings.mAnimationPath && mMaxAnimatedFrames > 0) {
     if (mCurrentAnimationStallFrame > mAnimationStallFrames) {
       if (mCurrentAnimatedFrame + 1 > mMaxAnimatedFrames) {
         mCurrentAnimatedFrame = 1;
       } else {
         mCurrentAnimatedFrame++;
       }
+      logger().info("Max animated frame is {}", mMaxAnimatedFrames);
       logger().info("Current animated frame is {}", mCurrentAnimatedFrame);
       mCurrentAnimationStallFrame = 1;
       mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1];

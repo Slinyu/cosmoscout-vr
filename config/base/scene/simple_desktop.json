@@ -885,7 +885,8 @@
           "primeMeridianInCenter": false
         },
         "Uranus": {
-          "texture": "../share/resources/textures/uranus.jpg"
+          "texture": "../share/resources/textures/uranus.jpg",
+          "animationPath": "../share/resources/textures/uranus-animated/"
         },
         "Miranda": {
           "texture": "../share/resources/textures/miranda.jpg"
@@ -903,7 +904,8 @@
           "texture": "../share/resources/textures/oberon.jpg"
         },
         "Neptune": {
-          "texture": "../share/resources/textures/neptune.jpg"
+          "texture": "../share/resources/textures/neptune.jpg",
+          "animationPath": "../share/resources/textures/neptune-animated/"
         },
         "Triton": {
           "texture": "../share/resources/textures/triton.jpg"
