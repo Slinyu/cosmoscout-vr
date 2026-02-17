@@ -420,8 +420,7 @@ bool SimpleBody::Do() {
       } else {
         mCurrentAnimatedFrame++;
       }
-      logger().info("Max animated frame is {}", mMaxAnimatedFrames);
-      logger().info("Current animated frame is {}", mCurrentAnimatedFrame);
+      //logger().info("Current animated frame is {}", mCurrentAnimatedFrame);
       mCurrentAnimationStallFrame = 1;
       mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1];
       
@@ -429,6 +428,7 @@ bool SimpleBody::Do() {
       mCurrentAnimationStallFrame++;
     }
   }
+  
 
   // ------------------------------------------------
 
