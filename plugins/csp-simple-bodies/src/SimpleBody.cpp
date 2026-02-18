@@ -9,6 +9,7 @@
 
 #include "../../../src/cs-core/Settings.hpp"
 #include "../../../src/cs-core/SolarSystem.hpp"
+#include "../../../src/cs-core/TimeControl.hpp"
 #include "../../../src/cs-graphics/TextureLoader.hpp"
 #include "../../../src/cs-utils/FrameStats.hpp"
 #include "../../../src/cs-utils/filesystem.hpp"
@@ -223,9 +224,11 @@ void main() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SimpleBody::SimpleBody(std::shared_ptr<cs::core::Settings> settings,
-    std::shared_ptr<cs::core::SolarSystem>                 solarSystem)
+    std::shared_ptr<cs::core::SolarSystem>                 solarSystem,
+    std::shared_ptr<cs::core::TimeControl>                 timeControl)
     : mSettings(std::move(settings))
     , mSolarSystem(std::move(solarSystem))
+    , mTimeControl(std::move(timeControl))
     , mEclipseShadowReceiver(mSettings, mSolarSystem, false) {
 
   // For rendering the sphere, we create a 2D-grid which is warped into a sphere in the vertex
@@ -407,28 +410,34 @@ bool SimpleBody::Do() {
 
   // ------------------------------------------------
 
-  /* Notes:
-    mTexture = cs::graphics::TextureLoader::loadFromFile(mSimpleBodySettings.mTexture);
-    ../share/resources/textures/jupiterA/jupiterA-0.jpg
-    string frameString = "../share/resources/textures/jupiter/jupiterA-" + "0" + ".jpg";
-  */
-
-  if (mSimpleBodySettings.mAnimationPath && mMaxAnimatedFrames > 0) {
-    if (mCurrentAnimationStallFrame > mAnimationStallFrames) {
+  // Check if animation frames exist and animation is possible.
+  if (mMaxAnimatedFrames > 0) {
+    // Check if enough time has passed into the future to update the animation frame.
+    if ((mTimeControl->pSimulationTime.get() - mLastAnimationTime) >= mTimeBetweenFrames) {
+      mLastAnimationTime = mTimeControl->pSimulationTime.get();
+      // If the current animated frame is the last one, we loop back to the first frame. Otherwise, we go to the next frame.
       if (mCurrentAnimatedFrame + 1 > mMaxAnimatedFrames) {
         mCurrentAnimatedFrame = 1;
       } else {
         mCurrentAnimatedFrame++;
       }
-      //logger().info("Current animated frame is {}", mCurrentAnimatedFrame);
-      mCurrentAnimationStallFrame = 1;
-      mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1];
-      
-    } else {
-      mCurrentAnimationStallFrame++;
+      // Set the texture to the current animated frame.
+      //logger().info("Current frame is: {}", mCurrentAnimatedFrame);
+      mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1]; 
+    // Check if enough time has passed into the past to update the animation frame.
+    } else if ((mLastAnimationTime - mTimeControl->pSimulationTime.get()) >= mTimeBetweenFrames) {
+      mLastAnimationTime = mTimeControl->pSimulationTime.get();
+      // If the current animated frame is the first one, we loop back to the last frame. Otherwise, we go to the previous frame.
+      if (mCurrentAnimatedFrame - 1 < 1) {
+        mCurrentAnimatedFrame = mMaxAnimatedFrames;
+      } else {
+        mCurrentAnimatedFrame--;
+      }
+      // Set the texture to the current animated frame.
+      //logger().info("Current frame is: {}", mCurrentAnimatedFrame);
+      mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1]; 
     }
   }
-  
 
   // ------------------------------------------------
 

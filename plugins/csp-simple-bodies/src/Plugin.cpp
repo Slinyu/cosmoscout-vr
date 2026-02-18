@@ -10,6 +10,7 @@
 #include "../../../src/cs-core/InputManager.hpp"
 #include "../../../src/cs-core/Settings.hpp"
 #include "../../../src/cs-core/SolarSystem.hpp"
+#include "../../../src/cs-core/TimeControl.hpp"
 #include "../../../src/cs-utils/logger.hpp"
 #include "../../../src/cs-utils/utils.hpp"
 #include "SimpleBody.hpp"
@@ -142,7 +143,7 @@ void Plugin::onLoad() {
       continue;
     }
 
-    auto simpleBody = std::make_shared<SimpleBody>(mAllSettings, mSolarSystem);
+    auto simpleBody = std::make_shared<SimpleBody>(mAllSettings, mSolarSystem, mTimeControl);
     simpleBody->setObjectName(settings.first);
     simpleBody->configure(settings.second);
 

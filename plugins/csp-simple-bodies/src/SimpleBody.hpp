@@ -26,6 +26,7 @@
 
 namespace cs::core {
 class SolarSystem;
+class TimeControl;
 } // namespace cs::core
 
 namespace csp::simplebodies {
@@ -37,7 +38,8 @@ class SimpleBody : public cs::scene::CelestialSurface,
                    public IVistaOpenGLDraw {
  public:
   SimpleBody(std::shared_ptr<cs::core::Settings> settings,
-      std::shared_ptr<cs::core::SolarSystem>     solarSystem);
+      std::shared_ptr<cs::core::SolarSystem>     solarSystem,
+      std::shared_ptr<cs::core::TimeControl>    timeControl);
 
   SimpleBody(SimpleBody const& other) = delete;
   SimpleBody(SimpleBody&& other)      = default;
@@ -70,6 +72,7 @@ class SimpleBody : public cs::scene::CelestialSurface,
  private:
   std::shared_ptr<cs::core::Settings>    mSettings;
   std::shared_ptr<cs::core::SolarSystem> mSolarSystem;
+  std::shared_ptr<cs::core::TimeControl> mTimeControl;
 
   std::string mObjectName;
 
@@ -112,8 +115,8 @@ class SimpleBody : public cs::scene::CelestialSurface,
   // Frames start at 1. 0 Values here ensure no animation if no images available.
   int mMaxAnimatedFrames = 0;
   int mCurrentAnimatedFrame = 0;
-  int mAnimationStallFrames = 60;
-  int mCurrentAnimationStallFrame = 1;
+  double mLastAnimationTime = -1;
+  int mTimeBetweenFrames = 1;
 
   std::string mAnimationPath;
   std::vector<std::shared_ptr<VistaTexture>> mAnimationTextures;
