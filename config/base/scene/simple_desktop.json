@@ -831,8 +831,7 @@
           "texture": "../share/resources/textures/vesta.jpg"
         },
         "Jupiter": {
-          "texture": "../share/resources/textures/jupiter.jpg",
-          "animationPath": "../share/resources/textures/jupiter-animated/"
+          "texture": "../share/resources/textures/jupiter.jpg"
         },
         "Io": {
           "texture": "../share/resources/textures/io.jpg"
@@ -853,8 +852,7 @@
             "texture": "../share/resources/textures/saturn-rings.png",
             "innerRadius": 67000000,
             "outerRadius": 140210000
-          },
-          "animationPath": "../share/resources/textures/saturn-animated/"
+          }
         },
         "Mimas": {
           "texture": "../share/resources/textures/mimas.jpg",
@@ -885,8 +883,7 @@
           "primeMeridianInCenter": false
         },
         "Uranus": {
-          "texture": "../share/resources/textures/uranus.jpg",
-          "animationPath": "../share/resources/textures/uranus-animated/"
+          "texture": "../share/resources/textures/uranus.jpg"
         },
         "Miranda": {
           "texture": "../share/resources/textures/miranda.jpg"
@@ -904,8 +901,7 @@
           "texture": "../share/resources/textures/oberon.jpg"
         },
         "Neptune": {
-          "texture": "../share/resources/textures/neptune.jpg",
-          "animationPath": "../share/resources/textures/neptune-animated/"
+          "texture": "../share/resources/textures/neptune.jpg"
         },
         "Triton": {
           "texture": "../share/resources/textures/triton.jpg"

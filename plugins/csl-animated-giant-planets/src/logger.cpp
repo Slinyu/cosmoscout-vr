@@ -9,15 +9,15 @@
 
 #include "../../../src/cs-utils/logger.hpp"
 
-namespace csp::animatedgiantplanets {
+namespace csl::animatedgiantplanets {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 spdlog::logger& logger() {
-  static auto logger = cs::utils::createLogger("csp-animated-giant-planets");
+  static auto logger = cs::utils::createLogger("csl-animated-giant-planets");
   return *logger;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-} // namespace csp::animatedgiantplanets
+} // namespace csl::animatedgiantplanets

@@ -17,6 +17,7 @@
 # ignore all additional plugin directories in /plugins
 /plugins/*
 !/plugins/CMakeLists.txt
+!/plugins/csl-animated-giant-planets
 !/plugins/csl-tools
 !/plugins/csl-node-editor
 !/plugins/csp-anchor-labels

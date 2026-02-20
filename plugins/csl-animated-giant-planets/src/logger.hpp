@@ -5,17 +5,17 @@
 // SPDX-FileCopyrightText: German Aerospace Center (DLR) <cosmoscout@dlr.de>
 // SPDX-License-Identifier: MIT
 
-#ifndef CSP_ANIMATED_GIANT_PLANETS_LOGGER_HPP
-#define CSP_ANIMATED_GIANT_PLANETS_LOGGER_HPP
+#ifndef CSL_ANIMATED_GIANT_PLANETS_LOGGER_HPP
+#define CSL_ANIMATED_GIANT_PLANETS_LOGGER_HPP
 
 #include <spdlog/spdlog.h>
 
-namespace csp::animatedgiantplanets {
+namespace csl::animatedgiantplanets {
 
-/// This creates the default singleton logger for "csp-animated-giant-planets" when called for the first time
+/// This creates the default singleton logger for "csl-animated-giant-planets" when called for the first time
 /// and returns it. See cs-utils/logger.hpp for more logging details.
 spdlog::logger& logger();
 
-} // namespace csp::animatedgiantplanets
+} // namespace csl::animatedgiantplanets
 
-#endif // CSP_ANIMATED_GIANT_PLANETS_LOGGER_HPP
+#endif // CSL_ANIMATED_GIANT_PLANETS_LOGGER_HPP
