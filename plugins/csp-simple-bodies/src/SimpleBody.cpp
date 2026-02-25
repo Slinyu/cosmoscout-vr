@@ -397,16 +397,6 @@ void SimpleBody::update() {
         "Update " + parent->getCenterName(), cs::utils::FrameStats::TimerMode::eCPU);
     mEclipseShadowReceiver.update(*parent);
   }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool SimpleBody::Do() {
-  auto parent = mSolarSystem->getObject(mObjectName);
-
-  if (!parent || !parent->getIsBodyVisible()) {
-    return true;
-  }
 
   // ------------------------------------------------
 
@@ -421,9 +411,6 @@ bool SimpleBody::Do() {
       } else {
         mCurrentAnimatedFrame++;
       }
-      // Set the texture to the current animated frame.
-      //logger().info("Current frame is: {}", mCurrentAnimatedFrame);
-      mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1]; 
     // Check if enough time has passed into the past to update the animation frame.
     } else if ((mLastAnimationTime - mTimeControl->pSimulationTime.get()) >= mTimeBetweenFrames) {
       mLastAnimationTime = mTimeControl->pSimulationTime.get();
@@ -433,10 +420,27 @@ bool SimpleBody::Do() {
       } else {
         mCurrentAnimatedFrame--;
       }
-      // Set the texture to the current animated frame.
-      //logger().info("Current frame is: {}", mCurrentAnimatedFrame);
-      mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1]; 
     }
+  }
+
+  // ------------------------------------------------
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool SimpleBody::Do() {
+  auto parent = mSolarSystem->getObject(mObjectName);
+
+  if (!parent || !parent->getIsBodyVisible()) {
+    return true;
+  }
+
+  // ------------------------------------------------
+
+  if (mMaxAnimatedFrames > 0) {
+    // Set the texture to the current animated frame.
+    //logger().info("Current frame is: {}", mCurrentAnimatedFrame);
+    mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1]; 
   }
 
   // ------------------------------------------------
