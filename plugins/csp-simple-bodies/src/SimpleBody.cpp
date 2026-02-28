@@ -397,6 +397,28 @@ void SimpleBody::update() {
         "Update " + parent->getCenterName(), cs::utils::FrameStats::TimerMode::eCPU);
     mEclipseShadowReceiver.update(*parent);
   }
+
+  if (mMaxAnimatedFrames > 0) {
+    // Check if enough time has passed into the future to update the animation frame.
+    if ((mTimeControl->pSimulationTime.get() - mLastAnimationTime) >= mTimeBetweenFrames) {
+      mLastAnimationTime = mTimeControl->pSimulationTime.get();
+      // If the current animated frame is the last one, we loop back to the first frame. Otherwise, we go to the next frame.
+      if (mCurrentAnimatedFrame + 1 > mMaxAnimatedFrames) {
+        mCurrentAnimatedFrame = 1;
+      } else {
+        mCurrentAnimatedFrame++;
+      }
+    // Check if enough time has passed into the past to update the animation frame.
+    } else if ((mLastAnimationTime - mTimeControl->pSimulationTime.get()) >= mTimeBetweenFrames) {
+      mLastAnimationTime = mTimeControl->pSimulationTime.get();
+      // If the current animated frame is the first one, we loop back to the last frame. Otherwise, we go to the previous frame.
+      if (mCurrentAnimatedFrame - 1 < 1) {
+        mCurrentAnimatedFrame = mMaxAnimatedFrames;
+      } else {
+        mCurrentAnimatedFrame--;
+      }
+    }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -412,27 +434,6 @@ bool SimpleBody::Do() {
 
   // Check if animation frames exist and animation is possible.
   if (mMaxAnimatedFrames > 0) {
-    // Check if enough time has passed into the future to update the animation frame.
-    if ((mTimeControl->pSimulationTime.get() - mLastAnimationTime) >= mTimeBetweenFrames) {
-      mLastAnimationTime = mTimeControl->pSimulationTime.get();
-      // If the current animated frame is the last one, we loop back to the first frame. Otherwise, we go to the next frame.
-      if (mCurrentAnimatedFrame + 1 > mMaxAnimatedFrames) {
-        mCurrentAnimatedFrame = 1;
-      } else {
-        mCurrentAnimatedFrame++;
-      }
-      // Set the texture to the current animated frame.
-      //logger().info("Current frame is: {}", mCurrentAnimatedFrame);
-      mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1]; 
-    // Check if enough time has passed into the past to update the animation frame.
-    } else if ((mLastAnimationTime - mTimeControl->pSimulationTime.get()) >= mTimeBetweenFrames) {
-      mLastAnimationTime = mTimeControl->pSimulationTime.get();
-      // If the current animated frame is the first one, we loop back to the last frame. Otherwise, we go to the previous frame.
-      if (mCurrentAnimatedFrame - 1 < 1) {
-        mCurrentAnimatedFrame = mMaxAnimatedFrames;
-      } else {
-        mCurrentAnimatedFrame--;
-      }
       // Set the texture to the current animated frame.
       //logger().info("Current frame is: {}", mCurrentAnimatedFrame);
       mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1]; 
