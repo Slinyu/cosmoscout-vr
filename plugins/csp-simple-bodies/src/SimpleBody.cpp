@@ -438,7 +438,6 @@ bool SimpleBody::Do() {
       //logger().info("Current frame is: {}", mCurrentAnimatedFrame);
       mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1]; 
     }
-  }
 
   // ------------------------------------------------
 
