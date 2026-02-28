@@ -19,6 +19,7 @@
 #include "../../../src/cs-core/Settings.hpp"
 #include "../../../src/cs-scene/CelestialSurface.hpp"
 #include "../../../src/cs-scene/IntersectableObject.hpp"
+#include "../../csl-animated-giant-planets/src/AnimatedGiantPlanets.hpp"
 
 #include <memory>
 
@@ -73,6 +74,7 @@ class SimpleBody : public cs::scene::CelestialSurface,
   std::shared_ptr<cs::core::Settings>    mSettings;
   std::shared_ptr<cs::core::SolarSystem> mSolarSystem;
   std::shared_ptr<cs::core::TimeControl> mTimeControl;
+  std::unique_ptr<csl::animatedgiantplanets::AnimatedGiantPlanets> mAnimatedGiantPlanets;
 
   std::string mObjectName;
 

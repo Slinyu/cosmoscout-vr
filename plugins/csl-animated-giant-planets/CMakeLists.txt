@@ -14,6 +14,7 @@ endif()
 # build plugin -------------------------------------------------------------------------------------
 
 file(GLOB SOURCE_FILES src/*.cpp)
+# file(GLOB SOURCE_FILES src/*.cpp src/gaseous-giganticus/*.c)
 
 # Resource files and header files are only added in order to make them available in your IDE.
 file(GLOB HEADER_FILES src/*.hpp)
@@ -37,7 +38,7 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES
 )
 
 target_include_directories(csl-animated-giant-planets PUBLIC
-    /plugins/csl-animated-giant-planets
+    ${CMAKE_BINARY_DIR}/plugins/csl-animated-giant-planets
 )
 
 # install plugin -----------------------------------------------------------------------------------

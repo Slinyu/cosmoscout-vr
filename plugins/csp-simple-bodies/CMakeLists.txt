@@ -28,6 +28,7 @@ add_library(csp-simple-bodies SHARED
 target_link_libraries(csp-simple-bodies
   PUBLIC
     cs-core
+    csl-animated-giant-planets
 )
 
 # Add this Plugin to a "plugins" folder in your IDE.
