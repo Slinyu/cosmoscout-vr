@@ -21,8 +21,13 @@ AnimatedGiantPlanets::~AnimatedGiantPlanets() {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AnimatedGiantPlanets::test() {
-  logger().info("Test function in AnimatedGiantPlanets called.");
+
+void AnimatedGiantPlanets::startGeneratingImages(const std::string &sDestPath) {
+  logger().info("----------> Received Dest Path: {}", sDestPath);
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AnimatedGiantPlanets::stopGeneratingImages() {}
 
 } // namespace csl::animatedgiantplanets

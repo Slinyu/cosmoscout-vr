@@ -74,7 +74,6 @@ class SimpleBody : public cs::scene::CelestialSurface,
   std::shared_ptr<cs::core::Settings>    mSettings;
   std::shared_ptr<cs::core::SolarSystem> mSolarSystem;
   std::shared_ptr<cs::core::TimeControl> mTimeControl;
-  std::unique_ptr<csl::animatedgiantplanets::AnimatedGiantPlanets> mAnimatedGiantPlanets;
 
   std::string mObjectName;
 
@@ -122,6 +121,7 @@ class SimpleBody : public cs::scene::CelestialSurface,
 
   std::string mAnimationPath;
   std::vector<std::shared_ptr<VistaTexture>> mAnimationTextures;
+  std::unique_ptr<csl::animatedgiantplanets::AnimatedGiantPlanets> mAnimatedGiantPlanets;
 
 // ------------------------------------------------
 };

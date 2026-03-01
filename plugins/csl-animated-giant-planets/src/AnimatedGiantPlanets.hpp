@@ -10,6 +10,8 @@
 
 #include "csl_animated_giant_planets_export.hpp"
 
+#include <string>
+
 namespace csl::animatedgiantplanets {
 
 class CSL_ANIMATED_GIANT_PLANETS_EXPORT AnimatedGiantPlanets {
@@ -17,7 +19,8 @@ public:
   AnimatedGiantPlanets();
   ~AnimatedGiantPlanets();
 
-  void test();
+  void startGeneratingImages(const std::string &sDestPath);
+  void stopGeneratingImages();
 
  //private:
 

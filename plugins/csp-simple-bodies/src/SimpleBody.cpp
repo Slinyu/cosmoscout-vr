@@ -312,6 +312,7 @@ void SimpleBody::configure(Plugin::Settings::SimpleBody const& settings) {
   if (mSimpleBodySettings.mAnimationPath != settings.mAnimationPath) {
     // Sets up animation if path is set
     mAnimationPath = *settings.mAnimationPath;
+    mAnimatedGiantPlanets->startGeneratingImages(mAnimationPath);
     logger().info("Animation Path changed to: {}", mAnimationPath);
     // Sets settings for animation frames if the directory exists.
     if (std::filesystem::exists(mAnimationPath) && std::filesystem::is_directory(mAnimationPath)) {
