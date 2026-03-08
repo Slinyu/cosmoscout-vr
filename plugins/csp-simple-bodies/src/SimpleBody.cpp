@@ -100,6 +100,11 @@ uniform float uSunIlluminance;
   uniform vec2 uRingRadii;
 #endif
 
+#ifdef IS_ANIMATED
+  uniform sampler2D uNextTexture;
+  uniform float uImageFadeWeight;
+#endif
+
 ECLIPSE_SHADER_SNIPPET
 
 // inputs
@@ -182,6 +187,11 @@ $BRDF_NON_HDR
 
 void main() {
     oColor = texture(uSurfaceTexture, vTexCoords).rgb;
+
+#ifdef IS_ANIMATED
+    vec3 nextColor = texture(uNextTexture, vTexCoords).rgb;
+    oColor = mix(oColor, nextColor, uImageFadeWeight);
+#endif
 
     // Needed for the BRDFs.
     vec3 N = normalize(vNormal);
@@ -402,26 +412,45 @@ void SimpleBody::update() {
 
   // Check if animation frames exist and animation is possible.
   if (mMaxAnimatedFrames > 0) {
+    // Remember how much time passed sinc last frame and calculate the fraction of time passed.
+    double timeSinceLastFrame = mTimeControl->pSimulationTime.get() - mLastAnimationTime;
+    mImageFadeWeight = timeSinceLastFrame / mTimeBetweenFrames;
+    
     // Check if enough time has passed into the future to update the animation frame.
-    if ((mTimeControl->pSimulationTime.get() - mLastAnimationTime) >= mTimeBetweenFrames) {
+    if (timeSinceLastFrame >= mTimeBetweenFrames) {
       mLastAnimationTime = mTimeControl->pSimulationTime.get();
+      mImageFadeWeight = 0.0;
+
       // If the current animated frame is the last one, we loop back to the first frame. Otherwise, we go to the next frame.
       if (mCurrentAnimatedFrame + 1 > mMaxAnimatedFrames) {
         mCurrentAnimatedFrame = 1;
       } else {
         mCurrentAnimatedFrame++;
       }
-    // Check if enough time has passed into the past to update the animation frame.
-    } else if ((mLastAnimationTime - mTimeControl->pSimulationTime.get()) >= mTimeBetweenFrames) {
-      mLastAnimationTime = mTimeControl->pSimulationTime.get();
-      // If the current animated frame is the first one, we loop back to the last frame. Otherwise, we go to the previous frame.
-      if (mCurrentAnimatedFrame - 1 < 1) {
+      if (mNextAnimatedFrame + 1 > mMaxAnimatedFrames) {
+        mNextAnimatedFrame = 1;
+      } else {
+        mNextAnimatedFrame++;
+    }
+
+  // Check if enough time has passed into the past to update the animation frame.
+  }else if (timeSinceLastFrame <= -mTimeBetweenFrames) {
+    mLastAnimationTime = mTimeControl->pSimulationTime.get();
+    mImageFadeWeight = 1.0;
+
+    // If the current animated frame is the last one, we loop back to the first frame. Otherwise, we go to the next frame.
+    if (mCurrentAnimatedFrame - 1 < 1) {
         mCurrentAnimatedFrame = mMaxAnimatedFrames;
       } else {
         mCurrentAnimatedFrame--;
       }
+    if (mNextAnimatedFrame - 1 < 1) {
+      mNextAnimatedFrame = mMaxAnimatedFrames;
+    } else {
+      mNextAnimatedFrame--;
     }
   }
+}
 
   // ------------------------------------------------
 }
@@ -439,8 +468,9 @@ bool SimpleBody::Do() {
 
   if (mMaxAnimatedFrames > 0) {
     // Set the texture to the current animated frame.
-    //logger().info("Current frame is: {}", mCurrentAnimatedFrame);
+    logger().info("Current frame is: {}", mCurrentAnimatedFrame);
     mTexture = mAnimationTextures[mCurrentAnimatedFrame - 1]; 
+    mNextTexture = mAnimationTextures[mNextAnimatedFrame - 1];
   }
 
   // ------------------------------------------------
@@ -467,6 +497,10 @@ bool SimpleBody::Do() {
 
     if (mSimpleBodySettings.mRing) {
       defines += "#define HAS_RING\n";
+    }
+
+    if (mMaxAnimatedFrames > 0) {
+      defines += "#define IS_ANIMATED\n";
     }
 
     std::string vert = defines + SPHERE_VERT;
@@ -504,6 +538,11 @@ bool SimpleBody::Do() {
     if (mSimpleBodySettings.mRing) {
       mUniforms.ringTexture = mShader.GetUniformLocation("uRingTexture");
       mUniforms.ringRadii   = mShader.GetUniformLocation("uRingRadii");
+    }
+
+    if (mMaxAnimatedFrames > 0) {
+      mUniforms.nextTexture    = mShader.GetUniformLocation("uNextTexture");
+      mUniforms.imageFadeWeight = mShader.GetUniformLocation("uImageFadeWeight");
     }
 
     // We bind the eclipse shadow map to texture unit 2.
@@ -579,6 +618,12 @@ bool SimpleBody::Do() {
     mRingTexture->Bind(GL_TEXTURE1);
   }
 
+  if (mMaxAnimatedFrames > 0) {
+    mShader.SetUniform(mUniforms.nextTexture, 2);
+    mNextTexture->Bind(GL_TEXTURE2);
+    mShader.SetUniform(mUniforms.imageFadeWeight, static_cast<float>(mImageFadeWeight));
+  }
+
   // Initialize eclipse shadow-related uniforms and textures.
   mEclipseShadowReceiver.preRender();
 
@@ -596,6 +641,10 @@ bool SimpleBody::Do() {
 
   if (mSimpleBodySettings.mRing) {
     mRingTexture->Unbind();
+  }
+
+  if (mMaxAnimatedFrames > 0) {
+    mNextTexture->Unbind();
   }
 
   mShader.Release();

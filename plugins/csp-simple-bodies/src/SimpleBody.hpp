@@ -105,6 +105,8 @@ class SimpleBody : public cs::scene::CelestialSurface,
     uint32_t radii             = 0;
     uint32_t ringTexture       = 0;
     uint32_t ringRadii         = 0;
+    uint32_t nextTexture       = 0;
+    uint32_t imageFadeWeight   = 0;
   } mUniforms;
 
   static const char* SPHERE_VERT;
@@ -112,11 +114,15 @@ class SimpleBody : public cs::scene::CelestialSurface,
 
   // ------------------------------------------------
 
-  // Frames start at 1. 0 Values here ensure no animation if no images available.
+  // Frames start at 1.
   int mMaxAnimatedFrames = 0;
   int mCurrentAnimatedFrame = 0;
+  int mNextAnimatedFrame = 1;
   double mLastAnimationTime = -1;
   int mTimeBetweenFrames = 1;
+  double mImageFadeWeight = 0.0;
+
+  std::shared_ptr<VistaTexture> mNextTexture;
 
   std::string mAnimationPath;
   std::vector<std::shared_ptr<VistaTexture>> mAnimationTextures;
