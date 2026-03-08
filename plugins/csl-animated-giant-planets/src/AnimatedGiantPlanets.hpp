@@ -11,6 +11,7 @@
 #include "csl_animated_giant_planets_export.hpp"
 
 #include <string>
+#include <boost/process.hpp>
 
 namespace csl::animatedgiantplanets {
 
@@ -22,7 +23,8 @@ public:
   void startGeneratingImages(const std::string &sDestPath);
   void stopGeneratingImages();
 
- //private:
+private:
+  boost::process::child executable;
 
 };
 
